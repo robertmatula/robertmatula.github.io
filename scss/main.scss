@@ -1,2 +1,7 @@
-@import "./components/colors";
-@import "./components/fonts";
+@import "./parts/normalize";
+@import "./parts/variables";
+@import "./parts/functions";
+@import "./parts/mixins";
+@import "./parts/base";
+@import "./parts/text";
+@import "./parts/colors";
