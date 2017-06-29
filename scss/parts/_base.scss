@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&subset=latin-ext');
+
 * {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -12,9 +14,8 @@ html, body {
 }
 
 body {
-	font-family: 'Inconsolata', monospace;
-	color: #000;
-	background: $color__secondary;
+	color: #fff;
+   background: $color__secondary url("../images/rm.png") no-repeat fixed bottom;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -40,7 +41,7 @@ a {
 	height: 100vh;
 	width: 100vw;
 	margin: 0;
-  padding: calc-em(50);
+  padding: calc-em(30);
 }
 
 .header {
@@ -51,7 +52,7 @@ a {
     }
   }
   &__menu {
-  float: right;    
+  float: right;
     svg {
       width: 50px;
       height: 50px;
@@ -60,7 +61,15 @@ a {
 }
 
 .main {
+  display: flex;
+  justify-content:  center;
+  text-align: center;
+}
 
+.box {
+  background: $color__primary;
+  padding: calc-em(20);
+  width: 50%;
 }
 
 

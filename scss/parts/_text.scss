@@ -1,10 +1,12 @@
 h1 {
-    font-size: calc-em(36);
-    line-height: (40/36);
+    font-size: calc-em(48);
+    line-height: (52/46);
     font-family: $text__family-sans;
     // margin-bottom: calc-em(10, 40);
     font-weight: bold;
     color: #fff;
+    // $map: (576: 22, 768: 24, 992: 34);
+    // font-size: least-squares-fit($map);
 }
 
 h2 {
