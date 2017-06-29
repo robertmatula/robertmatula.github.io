@@ -22,6 +22,8 @@ body {
   font-family: $text__family-sans-serif;
 	color: #fff;
   background: $color__secondary url("../images/rm.png") no-repeat fixed bottom;
+  background-size:  auto 93%;
+  background-position: 40% bottom;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
   padding: calc-em(10);
@@ -75,6 +77,21 @@ a {
       }
     }
   }
+  &__icons {
+    list-style: none;
+    float: right;
+    padding: 0;
+    margin: 0;
+    li {
+      display: inline;
+      a {
+        svg {
+          width: 50px;
+          height: 50px;
+        }
+      }
+    }
+  }
 }
 
 .main {
@@ -105,15 +122,9 @@ a {
   }
 }
 
-
-// ---------------------------------------------------
-
-/*
----- Overlay
-*/
 .overlay {
   position: fixed;
-  background: rgba(148, 231, 213, 0.80);
+  background: rgba(46, 21, 148, 0.8);
   top: 0;
   left: 0;
   width: 100%;
@@ -163,7 +174,7 @@ a {
           font-weight: 900;
           margin: calc-em(10) 0;
           &:focus, &:active, &:after, &:hover {
-            color: $color__primary;
+            color: $color__secondary;
           }
         }
       }
@@ -193,9 +204,4 @@ a {
   &:hover {
     transform: scale(1.1);
   }
-}
-
- @keyframes fillUp {
-   from { fill-opacity: 0; }
-   to { fill-opacity: 1; }
 }
