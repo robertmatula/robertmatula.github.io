@@ -72,6 +72,230 @@
 
 __webpack_require__(1);
 
+/**
+ * main.js
+ * http://www.codrops.com
+ *
+ * Licensed under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * Copyright 2016, Codrops
+ * http://www.codrops.com
+ */
+(function (window) {
+
+	'use strict';
+
+	// Helper vars and functions.
+
+	function extend(a, b) {
+		for (var key in b) {
+			if (b.hasOwnProperty(key)) {
+				a[key] = b[key];
+			}
+		}
+		return a;
+	}
+
+	function createDOMEl(type, className, content) {
+		var el = document.createElement(type);
+		el.className = className || '';
+		el.innerHTML = content || '';
+		return el;
+	}
+
+	/**
+  * RevealFx obj.
+  */
+	function RevealFx(el, options) {
+		this.el = el;
+		this.options = extend({}, this.options);
+		extend(this.options, options);
+		this._init();
+	}
+
+	/**
+  * RevealFx options.
+  */
+	RevealFx.prototype.options = {
+		// If true, then the content will be hidden until it´s "revealed".
+		isContentHidden: true,
+		// The animation/reveal settings. This can be set initially or passed when calling the reveal method.
+		revealSettings: {
+			// Animation direction: left right (lr) || right left (rl) || top bottom (tb) || bottom top (bt).
+			direction: 'lr',
+			// Revealer´s background color.
+			bgcolor: '#f0f0f0',
+			// Animation speed. This is the speed to "cover" and also "uncover" the element (seperately, not the total time).
+			duration: 500,
+			// Animation easing. This is the easing to "cover" and also "uncover" the element.
+			easing: 'easeInOutQuint',
+			// percentage-based value representing how much of the area should be left covered.
+			coverArea: 0,
+			// Callback for when the revealer is covering the element (halfway through of the whole animation).
+			onCover: function onCover(contentEl, revealerEl) {
+				return false;
+			},
+			// Callback for when the animation starts (animation start).
+			onStart: function onStart(contentEl, revealerEl) {
+				return false;
+			},
+			// Callback for when the revealer has completed uncovering (animation end).
+			onComplete: function onComplete(contentEl, revealerEl) {
+				return false;
+			}
+		}
+	};
+
+	/**
+  * Init.
+  */
+	RevealFx.prototype._init = function () {
+		this._layout();
+	};
+
+	/**
+  * Build the necessary structure.
+  */
+	RevealFx.prototype._layout = function () {
+		var position = getComputedStyle(this.el).position;
+		if (position !== 'fixed' && position !== 'absolute' && position !== 'relative') {
+			this.el.style.position = 'relative';
+		}
+		// Content element.
+		this.content = createDOMEl('div', 'block-revealer__content', this.el.innerHTML);
+		if (this.options.isContentHidden) {
+			this.content.style.opacity = 0;
+		}
+		// Revealer element (the one that animates)
+		this.revealer = createDOMEl('div', 'block-revealer__element');
+		this.el.classList.add('block-revealer');
+		this.el.innerHTML = '';
+		this.el.appendChild(this.content);
+		this.el.appendChild(this.revealer);
+	};
+
+	/**
+  * Gets the revealer element´s transform and transform origin.
+  */
+	RevealFx.prototype._getTransformSettings = function (direction) {
+		var val, origin, origin_2;
+
+		switch (direction) {
+			case 'lr':
+				val = 'scale3d(0,1,1)';
+				origin = '0 50%';
+				origin_2 = '100% 50%';
+				break;
+			case 'rl':
+				val = 'scale3d(0,1,1)';
+				origin = '100% 50%';
+				origin_2 = '0 50%';
+				break;
+			case 'tb':
+				val = 'scale3d(1,0,1)';
+				origin = '50% 0';
+				origin_2 = '50% 100%';
+				break;
+			case 'bt':
+				val = 'scale3d(1,0,1)';
+				origin = '50% 100%';
+				origin_2 = '50% 0';
+				break;
+			default:
+				val = 'scale3d(0,1,1)';
+				origin = '0 50%';
+				origin_2 = '100% 50%';
+				break;
+		};
+
+		return {
+			// transform value.
+			val: val,
+			// initial and halfway/final transform origin.
+			origin: { initial: origin, halfway: origin_2 }
+		};
+	};
+
+	/**
+  * Reveal animation. If revealSettings is passed, then it will overwrite the options.revealSettings.
+  */
+	RevealFx.prototype.reveal = function (revealSettings) {
+		// Do nothing if currently animating.
+		if (this.isAnimating) {
+			return false;
+		}
+		this.isAnimating = true;
+
+		// Set the revealer element´s transform and transform origin.
+		var defaults = { // In case revealSettings is incomplete, its properties deafault to:
+			duration: 500,
+			easing: 'easeInOutQuint',
+			delay: 0,
+			bgcolor: '#f0f0f0',
+			direction: 'lr',
+			coverArea: 0
+		},
+		    revealSettings = revealSettings || this.options.revealSettings,
+		    direction = revealSettings.direction || defaults.direction,
+		    transformSettings = this._getTransformSettings(direction);
+
+		this.revealer.style.WebkitTransform = this.revealer.style.transform = transformSettings.val;
+		this.revealer.style.WebkitTransformOrigin = this.revealer.style.transformOrigin = transformSettings.origin.initial;
+
+		// Set the Revealer´s background color.
+		this.revealer.style.backgroundColor = revealSettings.bgcolor || defaults.bgcolor;
+
+		// Show it. By default the revealer element has opacity = 0 (CSS).
+		this.revealer.style.opacity = 1;
+
+		// Animate it.
+		var self = this,
+
+		// Second animation step.
+		animationSettings_2 = {
+			complete: function complete() {
+				self.isAnimating = false;
+				if (typeof revealSettings.onComplete === 'function') {
+					revealSettings.onComplete(self.content, self.revealer);
+				}
+			}
+		},
+
+		// First animation step.
+		animationSettings = {
+			delay: revealSettings.delay || defaults.delay,
+			complete: function complete() {
+				self.revealer.style.WebkitTransformOrigin = self.revealer.style.transformOrigin = transformSettings.origin.halfway;
+				if (typeof revealSettings.onCover === 'function') {
+					revealSettings.onCover(self.content, self.revealer);
+				}
+				anime(animationSettings_2);
+			}
+		};
+
+		animationSettings.targets = animationSettings_2.targets = this.revealer;
+		animationSettings.duration = animationSettings_2.duration = revealSettings.duration || defaults.duration;
+		animationSettings.easing = animationSettings_2.easing = revealSettings.easing || defaults.easing;
+
+		var coverArea = revealSettings.coverArea || defaults.coverArea;
+		if (direction === 'lr' || direction === 'rl') {
+			animationSettings.scaleX = [0, 1];
+			animationSettings_2.scaleX = [1, coverArea / 100];
+		} else {
+			animationSettings.scaleY = [0, 1];
+			animationSettings_2.scaleY = [1, coverArea / 100];
+		}
+
+		if (typeof revealSettings.onStart === 'function') {
+			revealSettings.onStart(self.content, self.revealer);
+		}
+		anime(animationSettings);
+	};
+
+	window.RevealFx = RevealFx;
+})(window);
+
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -112,7 +336,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "/* ==========================================================================\r\n   Normalize.scss settings\r\n   ========================================================================== */\n/**\r\n * Includes legacy browser support IE6/7\r\n *\r\n * Set to false if you want to drop support for IE6 and IE7\r\n */\n/* Base\r\n   ========================================================================== */\n/**\r\n * 1. Set default font family to sans-serif.\r\n * 2. Prevent iOS and IE text size adjust after device orientation change,\r\n *    without disabling user zoom.\r\n * 3. Corrects text resizing oddly in IE 6/7 when body `font-size` is set using\r\n *  `em` units.\r\n */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  -ms-text-size-adjust: 100%;\n  /* 2 */\n  -webkit-text-size-adjust: 100%;\n  /* 2 */ }\n\n/**\r\n * Remove default margin.\r\n */\nbody {\n  margin: 0; }\n\n/* HTML5 display definitions\r\n   ========================================================================== */\n/**\r\n * Correct `block` display not defined for any HTML5 element in IE 8/9.\r\n * Correct `block` display not defined for `details` or `summary` in IE 10/11\r\n * and Firefox.\r\n * Correct `block` display not defined for `main` in IE 11.\r\n */\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmain,\nmenu,\nnav,\nsection,\nsummary {\n  display: block; }\n\n/**\r\n * 1. Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.\r\n * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.\r\n */\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\r\n * Prevents modern browsers from displaying `audio` without controls.\r\n * Remove excess height in iOS 5 devices.\r\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\r\n * Address `[hidden]` styling not present in IE 8/9/10.\r\n * Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.\r\n */\n[hidden],\ntemplate {\n  display: none; }\n\n/* Links\r\n   ========================================================================== */\n/**\r\n * Remove the gray background color from active links in IE 10.\r\n */\na {\n  background-color: transparent; }\n\n/**\r\n * Improve readability of focused elements when they are also in an\r\n * active/hover state.\r\n */\na:active, a:hover {\n  outline: 0; }\n\n/* Text-level semantics\r\n   ========================================================================== */\n/**\r\n * Address styling not present in IE 8/9/10/11, Safari, and Chrome.\r\n */\nabbr[title] {\n  border-bottom: 1px dotted; }\n\n/**\r\n * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.\r\n */\nb,\nstrong {\n  font-weight: bold; }\n\n/**\r\n * Address styling not present in Safari and Chrome.\r\n */\ndfn {\n  font-style: italic; }\n\n/**\r\n * Address variable `h1` font-size and margin within `section` and `article`\r\n * contexts in Firefox 4+, Safari, and Chrome.\r\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/**\r\n * Addresses styling not present in IE 8/9.\r\n */\nmark {\n  background: #ff0;\n  color: #000; }\n\n/**\r\n * Address inconsistent and variable font size in all browsers.\r\n */\nsmall {\n  font-size: 80%; }\n\n/**\r\n * Prevent `sub` and `sup` affecting `line-height` in all browsers.\r\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsup {\n  top: -0.5em; }\n\nsub {\n  bottom: -0.25em; }\n\n/* Embedded content\r\n   ========================================================================== */\n/**\r\n * 1. Remove border when inside `a` element in IE 8/9/10.\r\n * 2. Improves image quality when scaled in IE 7.\r\n */\nimg {\n  border: 0; }\n\n/**\r\n * Correct overflow not hidden in IE 9/10/11.\r\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Grouping content\r\n   ========================================================================== */\n/**\r\n * Address margin not present in IE 8/9 and Safari.\r\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\r\n * Address differences between Firefox and other browsers.\r\n */\nhr {\n  box-sizing: content-box;\n  height: 0; }\n\n/**\r\n * Contain overflow in all browsers.\r\n */\npre {\n  overflow: auto; }\n\n/**\r\n * Address odd `em`-unit font size rendering in all browsers.\r\n * Correct font family set oddly in IE 6, Safari 4/5, and Chrome.\r\n */\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n  font-size: 1em; }\n\n/* Forms\r\n   ========================================================================== */\n/**\r\n * Known limitation: by default, Chrome and Safari on OS X allow very limited\r\n * styling of `select`, unless a `border` property is set.\r\n */\n/**\r\n * 1. Correct color not being inherited.\r\n *  Known issue: affects color of disabled elements.\r\n * 2. Correct font properties not being inherited.\r\n * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.\r\n * 4. Improves appearance and consistency in all browsers.\r\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  color: inherit;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n  margin: 0;\n  /* 3 */ }\n\n/**\r\n * Address `overflow` set to `hidden` in IE 8/9/10/11.\r\n */\nbutton {\n  overflow: visible; }\n\n/**\r\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\r\n * All other form control elements do not inherit `text-transform` values.\r\n * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.\r\n * Correct `select` style inheritance in Firefox.\r\n */\nbutton,\nselect {\n  text-transform: none; }\n\n/**\r\n * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`\r\n *  and `video` controls.\r\n * 2. Correct inability to style clickable `input` types in iOS.\r\n * 3. Improve usability and consistency of cursor style between image-type\r\n *  `input` and others.\r\n * 4. Removes inner spacing in IE 7 without affecting normal text inputs.\r\n *  Known issue: inner spacing remains in IE 6.\r\n */\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */\n  cursor: pointer;\n  /* 3 */ }\n\n/**\r\n * Re-set default cursor for disabled elements.\r\n */\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default; }\n\n/**\r\n * Remove inner padding and border in Firefox 4+.\r\n */\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0; }\n\n/**\r\n * Address Firefox 4+ setting `line-height` on `input` using `!important` in\r\n * the UA stylesheet.\r\n */\ninput {\n  line-height: normal; }\n\n/**\r\n * 1. Address box sizing set to `content-box` in IE 8/9/10.\r\n * 2. Remove excess padding in IE 8/9/10.\r\n *  Known issue: excess padding remains in IE 6.\r\n */\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Fix the cursor style for Chrome's increment/decrement buttons. For certain\r\n * `font-size` values of the `input`, it causes the cursor style of the\r\n * decrement button to change from `default` to `text`.\r\n */\ninput[type=\"number\"]::-webkit-inner-spin-button,\ninput[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\r\n * 1. Address `appearance` set to `searchfield` in Safari and Chrome.\r\n * 2. Address `box-sizing` set to `border-box` in Safari and Chrome.\r\n */\ninput[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  box-sizing: content-box;\n  /* 2 */ }\n\n/**\r\n * Remove inner padding and search cancel button in Safari and Chrome on OS X.\r\n * Safari (but not Chrome) clips the cancel button when the search input has\r\n * padding (and `textfield` appearance).\r\n */\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\r\n * Define consistent border, margin, and padding.\r\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\r\n * 1. Correct `color` not being inherited in IE 8/9/10/11.\r\n * 2. Remove padding so people aren't caught out if they zero out fieldsets.\r\n * 3. Corrects text not wrapping in Firefox 3.\r\n * 4. Corrects alignment displayed oddly in IE 6/7.\r\n */\nlegend {\n  border: 0;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Remove default vertical scrollbar in IE 8/9/10/11.\r\n */\ntextarea {\n  overflow: auto; }\n\n/**\r\n * Don't inherit the `font-weight` (applied by a rule above).\r\n * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.\r\n */\noptgroup {\n  font-weight: bold; }\n\n/* Tables\r\n   ========================================================================== */\n/**\r\n * Remove most spacing between table cells.\r\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\ntd,\nth {\n  padding: 0; }\n\n*, *::after, *::before {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml, body {\n  width: 100%;\n  overflow-x: hidden; }\n\nbody {\n  font-family: 'Inconsolata', monospace;\n  color: #000;\n  background: #94e7d5;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\na {\n  text-decoration: none;\n  color: #000;\n  outline: none; }\n  a:hover, a:focus {\n    color: #2d2d30; }\n\n.hidden {\n  display: none; }\n\n.content {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  overflow: hidden;\n  height: 100vh;\n  width: 100vw;\n  margin: 0;\n  padding: 3.125em; }\n\n.header__logo svg {\n  width: 100px;\n  height: 50px; }\n\n.header__menu {\n  float: right; }\n  .header__menu svg {\n    width: 50px;\n    height: 50px; }\n\nh1 {\n  font-size: 2.25em;\n  line-height: 1.11111;\n  font-family: \"Spectral\", serif;\n  font-weight: bold;\n  color: #fff; }\n\nh2 {\n  font-size: 1.5em;\n  line-height: 1.16667;\n  font-family: \"Spectral\", serif;\n  color: #fff; }\n\nh3 {\n  font-size: 1.25em;\n  line-height: 1.1;\n  font-family: \"Spectral\", serif; }\n", ""]);
 
 // exports
 
