@@ -57,8 +57,13 @@ a {
 .header {
   &__logo {
     svg {
-      width: 100px;
-      height: 50px;
+      width: 80px;
+      height: 60px;
+    }
+    &:hover {
+      .path {
+        animation: draw 2s;
+      }
     }
   }
 }
@@ -174,5 +179,11 @@ a {
   transition: transform 0.30s;
   &:hover {
     transform: scale(1.1);
+  }
+}
+
+ @keyframes draw {
+  100% {
+    fill: #fff;
   }
 }
