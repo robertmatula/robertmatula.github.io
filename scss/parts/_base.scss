@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Roboto&amp;subset=latin-ext');
 
 * {
   -webkit-box-sizing: border-box;
@@ -18,10 +19,15 @@ html, body {
 }
 
 body {
+  font-family: $text__family-sans-serif;
 	color: #fff;
-   background: $color__secondary url("../images/rm.png") no-repeat fixed bottom;
+  background: $color__secondary url("../images/rm.png") no-repeat fixed bottom;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+  padding: calc-em(10);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 a {
@@ -47,11 +53,11 @@ a {
 	display: flex;
   flex-direction: column;
   justify-content: space-between;
-	overflow: hidden;
-	height: 100vh;
-	width: 100vw;
 	margin: 0;
-  padding: calc-em(30);
+  width: 100%;
+  height: 100%;
+  border: 1px solid #fff;
+  padding: calc-em(10);
 }
 
 .header {
@@ -59,10 +65,13 @@ a {
     svg {
       width: 80px;
       height: 60px;
-    }
+      transition: 200ms;
+      transition-timing-function: ease-in-out;
+      -webkit-transition: 200ms;
+      -webkit-transition-timing-function: ease-in-out;
+      fill: $color__secondary;
     &:hover {
-      .path {
-        animation: draw 2s;
+      fill: #fff;
       }
     }
   }
@@ -83,6 +92,10 @@ a {
 
 
 .footer {
+  &__copyright {
+    float: left;
+    margin: 40px 0px 0px 0px;
+  }
   &__menu {
   float: right;
     svg {
@@ -182,8 +195,7 @@ a {
   }
 }
 
- @keyframes draw {
-  100% {
-    fill: #fff;
-  }
+ @keyframes fillUp {
+   from { fill-opacity: 0; }
+   to { fill-opacity: 1; }
 }
