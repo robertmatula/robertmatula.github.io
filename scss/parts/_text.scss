@@ -1,12 +1,14 @@
 h1 {
-    font-size: calc-em(48);
-    line-height: (52/46);
+    font-size: calc-em(56);
+    line-height: (60/54);
     font-family: $text__family-sans;
     // margin-bottom: calc-em(10, 40);
-    font-weight: bold;
+    font-weight: 900;
     color: #fff;
     // $map: (576: 22, 768: 24, 992: 34);
     // font-size: least-squares-fit($map);
+    float: left;
+    width: 100%;
 }
 
 h2 {
@@ -23,10 +25,3 @@ h3 {
     font-family: $text__family-sans;
     // margin-bottom: calc-em(15, 40);
 }
-
-// p {
-//     font-size: calc-em(15);
-//     line-height: (20/15);
-//     font-family: $text__family-sans;
-//     margin-bottom: calc-em(10, 15);
-// }

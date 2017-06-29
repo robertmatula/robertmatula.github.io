@@ -8,6 +8,10 @@
   }
 }
 
+.clearfix {
+  @include clearfix();
+}
+
 html, body {
 	width: 100%;
 	overflow-x: hidden;
@@ -21,12 +25,18 @@ body {
 }
 
 a {
-	text-decoration: none;
+  text-decoration: underline;
 	color: #000;
 	outline: none;
+  cursor: pointer;
 	&:hover, &:focus {
 		color: #2d2d30;
 	}
+}
+
+.icon {
+  width: 70px;
+  height: 70px;
 }
 
 .hidden {
@@ -51,19 +61,13 @@ a {
       height: 50px;
     }
   }
-  &__menu {
-  float: right;
-    svg {
-      width: 50px;
-      height: 50px;
-    }
-  }
 }
 
 .main {
   display: flex;
   justify-content:  center;
   text-align: center;
+  flex-direction: column;
 }
 
 .box {
@@ -74,5 +78,101 @@ a {
 
 
 .footer {
+  &__menu {
+  float: right;
+    svg {
+      width: 60px;
+      height: 60px;
+    }
+  }
+}
 
+
+// ---------------------------------------------------
+
+/*
+---- Overlay
+*/
+.overlay {
+  position: fixed;
+  background: rgba(148, 231, 213, 0.80);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s, visibility .35s, height .35s;
+  overflow: hidden;
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    height: 100%;
+    li {
+      animation: fadeInRight .5s ease forwards;
+      animation-delay: .35s;
+      &:nth-of-type(2) {
+        animation-delay: .4s;
+      }
+      &:nth-of-type(3) {
+        animation-delay: .45s;
+      }
+    }
+  }
+  &__menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      li {
+        display: block;
+        position: relative;
+        opacity: 0;
+        text-align: center;
+        a {
+          display: block;
+          position: relative;
+          color: #FFF;
+          overflow: hidden;
+          font-family: $text__family-sans;
+          font-size: calc-em(48);
+          line-height: (48/44);
+          font-weight: 900;
+          margin: calc-em(10) 0;
+          &:focus, &:active, &:after, &:hover {
+            color: $color__primary;
+          }
+        }
+      }
+    }
+  }
+}
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    left: 20%;
+  }
+  100% {
+    opacity: 1;
+    left: 0;
+  }
+}
+.close-menu {
+  position: absolute;
+  bottom: calc-em(30);
+  right: calc-em(30);
+  width: 50px;
+  height: 50px;
+}
+.open-menu,
+.close-menu {
+  transition: transform 0.30s;
+  &:hover {
+    transform: scale(1.1);
+  }
 }
