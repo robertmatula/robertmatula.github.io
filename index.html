@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<title>Robert Matuła | Front-end Developer</title>
+		<meta name="description" content="Robert Matuła | Front-End Developer, JavaScript Developer: REACT, Web Designer, Graphic Designer, Webmaster">
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +23,11 @@
 				<title>Cross</title>
 				<polygon fill="#FFFFFF" points="59.995,57.761 32.236,30.002 59.984,2.254 57.745,0.015 29.997,27.763 2.25,0.016 0.011,2.255
 	27.758,30.002 0,57.761 2.239,60 29.997,32.241 57.756,60 "/>
+			</symbol>
+			<symbol id="icon-back" viewBox="0 0 60 60">
+				<title>Back</title>
+				<polygon fill="#FFFFFF" points="18.365,30.014 46.1,2.277 43.861,0.04 16.126,27.777 13.888,30.014 16.126,32.252 43.875,60
+						46.111,57.763 	"/>
 			</symbol>
       <symbol id="rm-logo" viewBox="0 0 800 600">
 				<title>Logo</title>
@@ -103,8 +110,8 @@
       <header class="header">
         <a href="#" class="header__logo"><svg><use xlink:href="#rm-logo"></use></svg></a>
 				<ul class="header__icons">
-					<li><a href="#" class="" title="GitHub"><svg><use xlink:href="#icon-github-acc"></use></svg></a></li>
-					<li><a href="#" class="" title="Linkedin"><svg><use xlink:href="#icon-linkedin-acc"></use></svg></a></li>
+					<li><a href="#" class="icon icon--github" title="GitHub"><svg><use xlink:href="#icon-github-acc"></use></svg></a></li>
+					<li><a href="#" class="icon icon--linkedin" title="Linkedin"><svg><use xlink:href="#icon-linkedin-acc"></use></svg></a></li>
 				</ul>
       </header>
 
@@ -121,21 +128,20 @@
 						<svg class="icon icon--illustrator"><use xlink:href="#icon-illustrator"></use></svg>
 						<svg class="icon icon--php"><use xlink:href="#icon-php"></use></svg>
 						<svg class="icon icon--react"><use xlink:href="#icon-react"></use></svg>
-						<svg class="icon icon--responsive"><use xlink:href="#icon-responsive"></use></svg>
 						<svg class="icon icon--sass"><use xlink:href="#icon-sass"></use></svg>
-						<svg class="icon icon--terminal"><use xlink:href="#icon-terminal"></use></svg>
 						<svg class="icon icon--wordpress"><use xlink:href="#icon-wordpress"></use></svg>
 					</div>
       </main>
 
       <footer class="footer">
-				<span class="footer__copyright">2017 &copy; All rights reserved.</span>
+				<span class="footer__copyright">2017&copy; All rights reserved.</span>
       	<a href="#" class="footer__menu open-menu"><svg><use xlink:href="#icon-menu"></use></svg></a>
 			</footer>
     </div>
 
 		<div class="overlay">
-			<a href="#"><svg class="icon icon--cross close-menu"><use xlink:href="#icon-cross"></use></svg></a>
+			<svg class="icon icon--cross close-menu"><use xlink:href="#icon-cross"></use></svg>
+			<svg class="icon icon--back back-menu"><use xlink:href="#icon-back"></use></svg>
       <nav class="overlay__menu">
         <ul>
           <li><a href="#">About</a></li>
@@ -143,6 +149,48 @@
           <li><a href="#">Contact</a></li>
         </ul>
       </nav>
+			<div class="overlay__menu--about">
+				ABOUT Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, blanditiis, illum. Sit at libero, facilis accusamus consectetur quaerat voluptatibus. Velit obcaecati dolor fugiat officiis aliquid, repudiandae commodi pariatur dolorum nulla!
+<br /><br />
+about Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, blanditiis, illum. Sit at libero, facilis accusamus consectetur quaerat voluptatibus. Velit obcaecati dolor fugiat officiis aliquid, repudiandae commodi pariatur dolorum nulla!
+<br /><br />
+about Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, blanditiis, illum. Sit at libero, facilis accusamus consectetur quaerat voluptatibus. Velit obcaecati dolor fugiat officiis aliquid, repudiandae commodi pariatur dolorum nulla!
+<br /><br />
+about Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, blanditiis, illum. Sit at libero, facilis accusamus consectetur quaerat voluptatibus. Velit obcaecati dolor fugiat officiis aliquid, repudiandae commodi pariatur dolorum nulla!
+<br /><br />
+about Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, blanditiis, illum. Sit at libero, facilis accusamus consectetur quaerat voluptatibus. Velit obcaecati dolor fugiat officiis aliquid, repudiandae commodi pariatur dolorum nulla!
+<br /><br />
+about Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, blanditiis, illum. Sit at libero, facilis accusamus consectetur quaerat voluptatibus. Velit obcaecati dolor fugiat officiis aliquid, repudiandae commodi pariatur dolorum nulla!
+<br /><br />
+about Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, blanditiis, illum. Sit at libero, facilis accusamus consectetur quaerat voluptatibus. Velit obcaecati dolor fugiat officiis aliquid, repudiandae commodi pariatur dolorum nulla!
+<br /><br />
+about Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, blanditiis, illum. Sit at libero, facilis accusamus consectetur quaerat voluptatibus. Velit obcaecati dolor fugiat officiis aliquid, repudiandae commodi pariatur dolorum nulla!
+
+			</div>
+			<div class="overlay__menu--work">
+				work Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis eos cum non unde, saepe sed provident vitae, praesentium libero enim, pariatur cupiditate neque quibusdam architecto. Inventore fugit similique rem quasi.
+			</div>
+			<div class="overlay__menu--contact">
+				<div class="form">
+					<form action="http://api.coderslab.pl/showpost.php" method="post">
+						<label for="name">* Name:</label>
+						<input type="text" class='form__control' id='name' name="name" placeholder="Name Surname..." oninput="setCustomValidity('')" oninvalid="this.setCustomValidity('Please fill in this field')" required>
+						<label for="phone">Phone:</label>
+						<input type="tel" class='form__control' id='phone' name="phone" placeholder="Phone Number...">
+						<label for="email">* E-mail:</label>
+						<input type="email" class='form__control' id='email' name="email" placeholder="info@domain.com..." oninput="setCustomValidity('')" oninvalid="this.setCustomValidity('Please fill in this field')" required>
+						<label for="message">* Message:</label>
+						<textarea class='form__control' id='message' name="message" placeholder="Message..." oninput="setCustomValidity('')" oninvalid="this.setCustomValidity('Please fill in this field')" required></textarea>
+						<button class='btn btn--primary'>SEND</button>
+						<div class="info-container">
+							<div class="info-container__error-message">
+							</div>
+							<div class="info-container__success-message">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
     </div>
 
 		<script src="js/out.js"></script>
