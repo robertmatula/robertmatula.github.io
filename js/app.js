@@ -38,39 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   })
   backMenuButton.addEventListener('click', function(event) {
+    backMenuButton.style.display = 'none';
     document.querySelector('.current-page').classList.remove('current-page');
     ul.style.display = 'block';
   })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const name = document.querySelector('#name');
-  const phone = document.querySelector('#phone');
-  const email = document.querySelector('#email');
-  const message = document.querySelector('#message');
-  const form = document.querySelector('form');
-  const errorMessage = document.querySelector('.error-message');
-
-  form.addEventListener('submit', function( event ){
-      if ( email.value.indexOf('@') === -1 ){
-          event.preventDefault();
-          errorMessage.innerText = 'Incorrect e-mail address';
-          return;
-      }
-  })
-
-
-
 
 });
