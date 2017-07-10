@@ -1,30 +1,3 @@
 @function calc-em($target, $context: $base__font-size) {
     @return ($target / $context) * 1em;
 }
-
-// @function least-squares-fit($map) {
-//   $length: length(map-keys($map));
-//   @if ($length < 2) {
-//     @error "leastSquaresFit() $map must be at least 2 values"
-//   }
-//   $resTotal: 0;
-//   $valueTotal: 0;
-//   @each $res, $value in $map {
-//     $resTotal: $resTotal + $res;
-//     $valueTotal: $valueTotal + $value;
-//   }
-//   $resMean: $resTotal/$length;
-//   $valueMean: $valueTotal/$length;
-//   $multipliedDiff: 0;
-//   $squaredDiff: 0;
-//   @each $res, $value in $map {
-//     $resDiff: $res - $resMean;
-//     $valueDiff: $value - $valueMean;
-//     $multipliedDiff: $multipliedDiff + ($resDiff * $valueDiff);
-//     $squaredDiff: $squaredDiff + ($resDiff * $resDiff);
-//   }
-//   $m: $multipliedDiff / $squaredDiff;
-//   $b: $valueMean - ($m * $resMean);
-//   @return calc(#{$m*100}vw + #{$b}px);
-//
-// }

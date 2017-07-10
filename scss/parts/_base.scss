@@ -13,8 +13,6 @@
   @include clearfix();
 }
 
-
-
 html, body {
 	width: 100%;
 	overflow-x: hidden;
@@ -118,7 +116,6 @@ a {
   padding: calc-em(20);
   width: 50%;
 }
-
 
 .footer {
   &__copyright {
@@ -289,6 +286,7 @@ a {
   height: 25px;
   display: none;
 }
+
 .back-menu {
   position: fixed;
   top: calc-em(30);
@@ -297,6 +295,7 @@ a {
   height: 25px;
   display: none;
 }
+
 .open-menu, .close-menu, .back-menu {
   transition: transform 0.30s;
   &:hover {
@@ -315,27 +314,33 @@ a {
     from { opacity: 0;}
       to { opacity: 1;}
 }
+
 @keyframes fadeIn {
   from { opacity: 0;}
     to { opacity: 1;}
 }
 
 @media only screen and (min-width: 768px) {
+
   body {
     background-size: auto 93%;
   }
+
   .icon {
     width: 70px;
     height: 70px;
   }
+
   .close-menu {
     width: 50px;
     height: 50px;
   }
+
   .back-menu {
     width: 50px;
     height: 50px;
   }
+
   .header {
     &__icons {
       li {
@@ -348,6 +353,7 @@ a {
       }
     }
   }
+
   .overlay {
     &__menu {
       &--about, &--work, &--contact {
